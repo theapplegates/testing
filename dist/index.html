@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/main.css">
+    <title>Roll your own lazy loading</title>
+    <script src="/js/lazy.js" async defer></script>
+  </head>
+  <body class="" >
+    <div class="container">
+      <header>
+        <h1>Roll your own lazy loading</h1>
+        <p class="subtitle">
+          An example of powering picture elements for responsive images with lazy loading, using <a href="https://docs.netlify.com/image-cdn/overview/?utm_source=github&utm_medium=icdn-example-pnh&utm_campaign=devex" target="_BLANK" rel="noopener">Netlify Image CDN</a>.
+        </p>
+      </header>
+      <p>Take a look at <a href="https://github.com/philhawksworth/rollyourownlazyload">the code on GitHub</a>, or read on, for more explanation and examples.</p>
+<section class="post-teaser">
+  <div class="credit">By <a href="https://unsplash.com/photos/a-close-up-of-an-owl-with-yellow-eyes-t-FWwflH0uA?utm_content=creditShareLink&amp;utm_medium=referral&amp;utm_source=unsplash" target="_BLANK" rel="noopener"> christoph-nolte</a>, (<a href="/images/original/christoph-nolte-whoo-owl.jpg" target="_BLANK" rel="noopener">Original</a>)</div>
+  <picture class="lazy lazy-initial">
+  <source srcset="/images/tiny/christoph-nolte-whoo-owl.jpg" media="(min-width: 1200px)">
+  <source srcset="/images/tiny/christoph-nolte-whoo-owl.jpg" media="(min-width: 740px)">
+  <img src="/images/tiny/christoph-nolte-whoo-owl.jpg" alt="An Owl" /></picture></section >
+<h2>Image transformation</h2>
+<p>Thanks to the <a href="https://docs.netlify.com/image-cdn/overview/?utm_source=github&amp;utm_medium=icdn-example-pnh&amp;utm_campaign=devex">Netlify Image CDN</a>, we can take advantage of the ability to perform on-the-fly <a href="https://docs.netlify.com/image-cdn/overview/?utm_source=github&amp;utm_medium=icdn-example-pnh&amp;utm_campaign=devex#transform-images">image transformations</a> to deliver resized and cropped, versions of the images, in the best format for the user's browser, directly from Netlify's optimised <a href="https://www.netlify.com/features/adn/?utm_source=github&amp;utm_medium=icdn-example-pnh&amp;utm_campaign=devex">edge infrastructure</a>.</p>
+<p>Netlify Image CDN transforms and caches image assets if you make requests via a special <code>/.netlify/images/</code> URL, and add querystring parameters.</p>
+<p>For example, the image below can be served in any size:</p>
+<ul>
+<li><a href="/.netlify/images/?url=/images/lighthouse-5.jpg&amp;w=20">/.netlify/images/?url=/images/lighthouse-5.jpg?&amp;w=20</a></li>
+<li><a href="/.netlify/images/?url=/images/lighthouse-5.jpg&amp;w=500">/.netlify/images/?url=/images/lighthouse-5.jpg&amp;w=500</a></li>
+<li><a href="/.netlify/images/?url=/images/lighthouse-5.jpg&amp;w=700">/.netlify/images/?url=/images/lighthouse-5.jpg&amp;w=700</a></li>
+</ul>
+<h2>Abstract with helper URLs</h2>
+<p>To clean these URLs up a little, we can use <a href="https://www.netlify.com/docs/redirects/?utm_source=github&amp;utm_medium=icdn-example-pnh&amp;utm_campaign=devex">Netlify's Redirects API</a> to create some more friendly and abstracted URLs which <a href="https://github.com/philhawksworth/rollyourownlazyload/blob/master/netlify.toml">proxy</a> to the querystring decorated URLs:</p>
+<ul>
+<li><a href="/images/tiny/lighthouse-5.jpg">/images/tiny/lighthouse-5.jpg</a> → <a href="/.netlify/images/?url=/images/lighthouse-5.jpg&amp;w=20">/.netlify/images/?url=/images/lighthouse-5.jpg&amp;w=20</a></li>
+<li><a href="/images/small/lighthouse-5.jpg">/images/small/lighthouse-5.jpg</a> → <a href="/.netlify/images/?url=/images/lighthouse-5.jpg&amp;w=500">/.netlify/images/?url=/images/lighthouse-5.jpg&amp;w=500</a></li>
+<li><a href="/images/original/lighthouse-5.jpg">/images/original/lighthouse-5.jpg</a> → <a href="/images/lighthouse-5.jpg">/images/lighthouse-5.jpg</a></li>
+</ul>
+<p>The <a href="https://github.com/philhawksworth/rollyourownlazyload/blob/master/netlify.toml">redirects</a> and transformations even work locally to ease your development efforts if you run your local build with <a href="https://netlify.com/products/dev?utm_source=github&amp;utm_medium=icdn-example-pnh&amp;utm_campaign=devex">Netlify Dev</a></p>
+<h2>Using the picture element</h2>
+<p>These images have been added to the page in various sizes, using the picture element with multiple image sources.</p>
+<section class="post-teaser">
+  <div class="credit">By <a href="https://unsplash.com/photos/of4r2gHpCqU" target="_BLANK" rel="noopener"> Charlota Blunarova</a>, (<a href="/images/original/lighthouse-4.jpg" target="_BLANK" rel="noopener">Original</a>)</div>
+  <picture class="lazy lazy-initial">
+  <source srcset="/images/tiny/lighthouse-4.jpg" media="(min-width: 1200px)">
+  <source srcset="/images/tiny/lighthouse-4.jpg" media="(min-width: 740px)">
+  <img src="/images/tiny/lighthouse-4.jpg" alt="A snazzy lighthouse" /></picture>
+  <div class="credit">By <a href="https://unsplash.com/photos/5xWf-gE_45U" target="_BLANK" rel="noopener"> Jesse Orrico</a>, (<a href="/images/original/lighthouse-3.jpg" target="_BLANK" rel="noopener">Original</a>)</div>
+  <picture class="lazy lazy-initial">
+  <source srcset="/images/tiny/lighthouse-3.jpg" media="(min-width: 1200px)">
+  <source srcset="/images/tiny/lighthouse-3.jpg" media="(min-width: 740px)">
+  <img src="/images/tiny/lighthouse-3.jpg" alt="A snazzy lighthouse" /></picture>
+  <div class="credit">By <a href="https://unsplash.com/photos/kNxB07EA9r4" target="_BLANK" rel="noopener"> Youjeen Cho</a>, (<a href="/images/original/lighthouse-2.jpg" target="_BLANK" rel="noopener">Original</a>)</div>
+  <picture class="lazy lazy-initial">
+  <source srcset="/images/tiny/lighthouse-2.jpg" media="(min-width: 1200px)">
+  <source srcset="/images/tiny/lighthouse-2.jpg" media="(min-width: 740px)">
+  <img src="/images/tiny/lighthouse-2.jpg" alt="A snazzy lighthouse" /></picture>
+  <div class="credit">By <a href="https://unsplash.com/photos/9FidI-IQxwY" target="_BLANK" rel="noopener"> Chris Meads</a>, (<a href="/images/original/lighthouse-1.jpg" target="_BLANK" rel="noopener">Original</a>)</div>
+  <picture class="lazy lazy-initial">
+  <source srcset="/images/tiny/lighthouse-1.jpg" media="(min-width: 1200px)">
+  <source srcset="/images/tiny/lighthouse-1.jpg" media="(min-width: 740px)">
+  <img src="/images/tiny/lighthouse-1.jpg" alt="A snazzy lighthouse" /></picture></section >
+<h2>A picture helper</h2>
+<p>Whatever tool you use to generate your HTML, chances are that it includes a facility to make shortcodes or macros.</p>
+<p>This example uses a static site generator called <a href="https://www.11ty.io">11ty</a> which gives us the ability to make a <a href="https://www.11ty.io/docs/shortcodes/">shortcode</a> to output picture tags with many image source attributes including  transformation parameters automatically added to the image urls.</p>
+<p>This shortcode:</p>
+<pre class="language-html"><code class="language-html">{% lazypicture lighthouse.jpg "A snazzy lighthouse" %}</code></pre>
+<p>outputs this html:</p>
+<pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>picture</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>lazy lazy-initial<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>source</span> <span class="token attr-name">srcset</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>/images/tiny/lighthouse.jpg<span class="token punctuation">"</span></span> <span class="token attr-name">media</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>(min-width: 1200px)<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>source</span> <span class="token attr-name">srcset</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>/images/tiny/lighthouse.jpg<span class="token punctuation">"</span></span> <span class="token attr-name">media</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>(min-width: 740px)<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>img</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>/images/tiny/lighthouse.jpg<span class="token punctuation">"</span></span> <span class="token attr-name">alt</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>A snazzy lighthouse<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>picture</span><span class="token punctuation">></span></span></code></pre>
+<p>This sets <em>each image source</em> to use a tiny (typically less that 1k) version of the image. With some CSS, we size the image to fit and add some blurring to smooth it all down nicely.</p>
+<p>Then, thanks to the magic of the browser's <a href="https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API">Intersection Observer API</a>. We can detect when our images come into the viewport, and <a href="https://github.com/philhawksworth/rollyourownlazyload/blob/master/src/js/lazy.js">use JavaScript to update our image sources</a> to use more appropriately sized images in our responsive picture element.</p>
+<p>Removing the CSS class which applies the blur once our new image source is loaded completes the effect.</p>
+<h2>Get started with Netlify Image CDN</h2>
+<p>Need some reference code to get you going? You can clone <a href="https://github.com/philhawksworth/rollyourownlazyload">the code for this site</a> to use as an example.</p>
+<p>Once cloned, you can run the build locally or push to Netlify and start getting the benefits of the Netlify Image CDN right away.</p>
+
+      <footer>
+  <p>
+    Made by <a href="https://twitter.com/philhawksworth">Phil Hawksworth</a><br/>
+    Hosted by <a href="https://www.netlify.com">Netlify</a><br/>
+    Explore the code on <a href="https://github.com/philhawksworth/rollyourownlazyload">Github</a>
+  </p>
+</footer>
+
+    </div>
+    
+  </body>
+</html>
